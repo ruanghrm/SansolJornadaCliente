@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sansol - Minha Jornada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/user.css">
+</head>
+<body>
+    <header class="top-header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="assets/img/logotipo-sansol-horizontal-1024x279.png" alt="Sansol Logo" class="logo">
+            </div>
+            
+            <div class="user-controls">
+                <div class="plant-selector">
+                    <select id="plantSelect">
+                    </select>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                
+                <div class="user-info">
+                    <span class="user-name" id="userName"></span>
+                    <span class="contract-number" id="contractNumber"></span>
+                </div>
+                
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="main-header">
+        <h1>Minha Jornada</h1>
+    </div>
+
+    <div class="container">
+        <main>
+            <section class="kit-section">
+                <div class="section-header">
+                    <h2>Kit Adquirido</h2>
+                </div>
+                <div class="kit-details">
+                    <div class="kit-item">
+                        <i class="fas fa-solar-panel"></i>
+                        <div>
+                            <h3>12 Placas Solares</h3>
+                            <p>Marca: Canadian Solar</p>
+                            <p>Modelo: CS6R-430MS</p>
+                        </div>
+                    </div>
+                    <div class="kit-item">
+                        <i class="fas fa-microchip"></i>
+                        <div>
+                            <h3>1 Inversor</h3>
+                            <p>Marca: Growatt</p>
+                            <p>Modelo: MIN 5000TL-X</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="warranty-section">
+                <div class="section-header">
+                    <h2>Garantia</h2>
+                    <button class="info-btn" id="garantiaInfoBtn">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+                <div class="warranty-status">
+                    <div class="status-badge not-started">
+                        <i class="fas fa-clock"></i>
+                        <span>Não Iniciada</span>
+                    </div>
+                    <p class="warranty-message">Sua garantia será ativada após a instalação do sistema.</p>
+                </div>
+            </section>
+
+            <section class="status-section">
+                <div class="section-header">
+                    <h2>Status do Sistema</h2>
+                    <button class="info-btn" id="jornadaInfoBtn">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-step active" data-step="1">
+                        <div class="timeline-icon">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3>Contrato Assinado</h3>
+                            <p>Assinatura do contrato concluída</p>
+                            <span class="timeline-date" id="dateStep1"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step active" data-step="2">
+                        <div class="timeline-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3>Kit Adquirido</h3>
+                            <p>Pagamento confirmado e kit reservado</p>
+                            <span class="timeline-date" id="dateStep2"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step" data-step="4">
+                        <div class="timeline-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3>Instalação</h3>
+                            <p>Equipe técnica no local</p>
+                            <span class="timeline-date" id="dateStep4">Pendente</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step" data-step="5">
+                        <div class="timeline-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3>Ativação</h3>
+                            <p>Sistema conectado à rede</p>
+                            <span class="timeline-date" id="dateStep5">Pendente</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step" data-step="6">
+                        <div class="timeline-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3>Garantia</h3>
+                            <p>Período de garantia iniciado</p>
+                            <span class="timeline-date" id="dateStep6">Pendente</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalTitle">Informações</h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
