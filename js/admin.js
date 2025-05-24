@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const API_BASE = "http://34.121.218.11:7200";
+  const API_BASE = "https://www.sansolenergiasolar.com.br/python";
   const token = localStorage.getItem("access_token"); // confere se está correto
 
   let clientes = [];

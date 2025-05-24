@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       adminForm.append("email", email);
       adminForm.append("senha", senha);
 
-      const adminResponse = await fetch("http://34.121.218.11:7200/login", {
+      const adminResponse = await fetch("https://www.sansolenergiasolar.com.br/python/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -39,13 +39,12 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Usuário admin não autorizado.");
       }
     } catch (adminError) {
-      // Se falhou login admin, tenta login cliente
       try {
         const clienteForm = new URLSearchParams();
-        clienteForm.append("login", email); // pode ser email ou CPF
+        clienteForm.append("login", email);
         clienteForm.append("senha", senha);
 
-        const clienteResponse = await fetch("http://34.121.218.11:7200/cliente/login", {
+        const clienteResponse = await fetch("https://www.sansolenergiasolar.com.br/python/cliente/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const clienteData = await clienteResponse.json();
 
         localStorage.setItem("access_token", clienteData.access_token);
-        localStorage.setItem("user_id", clienteData.cliente_id); // Id do cliente
+        localStorage.setItem("user_id", clienteData.cliente_id);
         localStorage.setItem("role", "cliente");
         window.location.href = "user.html";
       } catch (clienteError) {

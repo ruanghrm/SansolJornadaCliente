@@ -1,5 +1,5 @@
 let token; // Variável global
-const API_BASE = 'http://34.121.218.11:7200';
+const API_BASE = 'https://www.sansolenergiasolar.com.br/python';
 
 document.addEventListener('DOMContentLoaded', function () {
     // Modal e form do cliente/projeto
