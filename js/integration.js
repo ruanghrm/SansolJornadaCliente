@@ -258,6 +258,13 @@ async function criarCliente() {
   console.log('Enviando dados do cliente:', clienteData);
   console.log('Token:', token);
 
+  // Desabilita o botão de submit durante o envio
+  const submitBtn = document.querySelector('#newClientForm button[type="submit"]');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Salvando...';
+  }
+
   try {
     const response = await fetch(`${API_BASE}/clientes`, {
       method: 'POST',
@@ -290,5 +297,134 @@ async function criarCliente() {
   } catch (error) {
     console.error('Erro de conexão:', error);
     alert('Erro de conexão com o servidor');
+  } finally {
+    // Reabilita o botão de submit
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Salvar Cliente';
+    }
   }
+}
+
+// Variável para armazenar o cliente selecionado
+let selectedClient = null;
+
+// Botões no header
+const selectClientBtn = document.createElement('button');
+selectClientBtn.className = 'btn btn-add';
+selectClientBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Selecionar Cliente';
+selectClientBtn.id = 'selectClientBtn';
+document.querySelector('.admin-actions').prepend(selectClientBtn);
+
+const createContractBtn = document.createElement('button');
+createContractBtn.className = 'btn btn-add';
+createContractBtn.innerHTML = '<i class="fa-solid fa-file-contract"></i> Criar Contrato';
+createContractBtn.id = 'createContractBtn';
+createContractBtn.disabled = true;
+document.querySelector('.admin-actions').insertBefore(createContractBtn, selectClientBtn.nextSibling);
+
+// Event Listeners
+selectClientBtn.addEventListener('click', () => {
+    document.getElementById('selectClientModal').style.display = 'block';
+    loadClientsForSelection();
+});
+
+createContractBtn.addEventListener('click', () => {
+    if (selectedClient) {
+        document.getElementById('createContractModal').style.display = 'block';
+        // Preencha os campos do endereço se já existirem
+        fillAddressFields(selectedClient);
+    }
+});
+
+// Fechar modal de seleção
+document.querySelector('.close-select-client').addEventListener('click', () => {
+    document.getElementById('selectClientModal').style.display = 'none';
+});
+
+// Busca de clientes
+document.getElementById('clientSearch').addEventListener('input', (e) => {
+    filterClients(e.target.value);
+});
+
+// Função para carregar clientes para seleção
+async function loadClientsForSelection() {
+    try {
+        const res = await fetch(`${API_BASE}/clientes/?skip=0&limit=100`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        if (!res.ok) throw new Error("Erro ao buscar clientes");
+        
+        const clients = await res.json();
+        renderClientList(clients);
+    } catch (err) {
+        showNotification('error', err.message);
+    }
+}
+
+// Renderizar lista de clientes
+function renderClientList(clients) {
+    const container = document.getElementById('clientListContainer');
+    container.innerHTML = '';
+    
+    clients.forEach(client => {
+        const clientItem = document.createElement('div');
+        clientItem.className = 'client-item';
+        clientItem.dataset.clientId = client.id;
+        clientItem.innerHTML = `
+            <h4>${client.nome_completo}</h4>
+            <p>${client.email || 'Sem e-mail'} • ${client.telefone || 'Sem telefone'}</p>
+        `;
+        
+        clientItem.addEventListener('click', () => {
+            selectClient(client);
+        });
+        
+        container.appendChild(clientItem);
+    });
+}
+
+// Filtrar clientes
+function filterClients(searchTerm) {
+    const items = document.querySelectorAll('.client-item');
+    const term = searchTerm.toLowerCase();
+    
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(term) ? 'block' : 'none';
+    });
+}
+
+// Selecionar cliente
+function selectClient(client) {
+    selectedClient = client;
+    
+    // Atualizar UI
+    document.getElementById('selectedClientName').textContent = client.nome_completo;
+    document.getElementById('selectedClientInfo').style.display = 'block';
+    createContractBtn.disabled = false;
+    
+    // Destacar item selecionado
+    document.querySelectorAll('.client-item').forEach(item => {
+        item.style.background = item.dataset.clientId === client.id ? '#e3f2fd' : '';
+    });
+    
+    // Configurar botão para prosseguir
+    document.getElementById('proceedToContractBtn').onclick = () => {
+        document.getElementById('selectClientModal').style.display = 'none';
+        document.getElementById('createContractModal').style.display = 'block';
+        fillAddressFields(client);
+    };
+}
+
+// Preencher campos de endereço automaticamente
+function fillAddressFields(client) {
+    if (client.cep) document.getElementById('cep_contract').value = client.cep;
+    if (client.logradouro) document.getElementById('logradouro_contract').value = client.logradouro;
+    if (client.bairro) document.getElementById('bairro_contract').value = client.bairro;
+    if (client.cidade) document.getElementById('cidade_contract').value = client.cidade;
+    if (client.estado) document.getElementById('estado_contract').value = client.estado;
+    if (client.numero_casa) document.getElementById('numero_contract').value = client.numero_casa;
+    if (client.complemento) document.getElementById('complemento_contract').value = client.complemento;
 }

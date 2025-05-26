@@ -23,8 +23,8 @@
                     <button class="btn btn-add" id="openNewProjectModalBtn">
                         <i class="fa-solid fa-plus"></i> Novo Projeto
                     </button>
-                    <button class="btn btn-add">
-                        <i class="fa-solid fa-plus"></i> Nova mensagem automática
+                    <button class="btn btn-mensage" id="autoMensageBtn">
+                        <i class="fa-solid fa-comment-dots"></i> Nova mensagem automática
                     </button>
                     <button class="btn btn-logout" id="logoutBtn">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
@@ -46,7 +46,7 @@
             <div class="kanban-column" data-status="kit adquirido">
                 <div class="column-header">
                     <h2>Kit Adquirido</h2>
-                    <span class="badge" id="kit-count">0</span>
+                    <span class="badge" id="kit-adquirido-count">0</span>
                 </div>
                 <div class="project-list" id="col-kit-adquirido">
                 </div>
@@ -150,27 +150,27 @@
             </div>
         </div>
 
-        <div class="modal" id="newProjectModal">
+        <div class="modal" id="selectClientModal">
             <div class="modal-content">
-                <span class="close-btn close-new-project">&times;</span>
-                <h2>Novo Projeto</h2>
+                <span class="close-btn close-select-client">&times;</span>
+                <h2>Selecionar Cliente</h2>
 
-                <form id="newProjectForm">
-                    <div class="form-group">
-                        <select id="clienteSelect" name="clienteSelect" required>
-                            <option value="">Carregando clientes...</option>
-                        </select>
-                    </div>
+                <div class="search-box">
+                    <input type="text" id="clientSearch" placeholder="Buscar cliente...">
+                    <i class="fas fa-search"></i>
+                </div>
 
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-cancel close-new-project">
-                            Cancelar
-                        </button>
-                        <button type="submit" id="btnOpenCreateContract" class="btn btn-save">
-                            Criar Projeto
-                        </button>
-                    </div>
-                </form>
+                <div class="client-list" id="clientListContainer">
+                 <!-- Lista de clientes será carregada aqui -->
+                </div>
+                <div class="selected-client-info" id="selectedClientInfo" style="display:none;">
+
+                    <h3>Cliente Selecionado:</h3>
+                    <p id="selectedClientName"></p>
+                    <button id="proceedToContractBtn" class="btn btn-save">
+                    Prosseguir para Criar Contrato
+                    </button>    
+                </div>    
             </div>
         </div>
 
