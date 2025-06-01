@@ -7,6 +7,9 @@
     <title>Sansol Admin - Gerenciamento de Projetos</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="css/admin.css" />
 </head>
 
@@ -14,219 +17,251 @@
     <div class="admin-container">
         <header class="admin-header">
             <img src="assets/img/logotipo-sansol-horizontal-1024x279.png" alt="Sansol Logo" class="logo" />
+            <div class="clienteName" id="clientName"></div>
             <div class="header-controls">
                 <h1>Painel de Projetos</h1>
                 <div class="admin-actions">
+                    <button class="btn btn-add" id="selectContractBtn">
+                        <i class="fa-solid fa-magnifying-glass"></i> Selecionar Cliente
+                    </button>
                     <button class="btn btn-add" id="addProjectBtn">
-                        <i class="fa-solid fa-plus"></i> Novo Cliente
+                        <i class="fa-solid fa-user-plus"></i> Novo Cliente
                     </button>
-                    <button class="btn btn-add" id="openNewProjectModalBtn">
-                        <i class="fa-solid fa-plus"></i> Novo Projeto
+                    <button class="btn btn-add" id="proceedToContractBtn">
+                        <i class="fa-solid fa-folder-plus"></i> Novo Projeto
                     </button>
-                    <button class="btn btn-mensage" id="autoMensageBtn">
-                        <i class="fa-solid fa-comment-dots"></i> Nova mensagem automática
-                    </button>
+                    <!-- <button class="btn btn-mensage" id="autoMensageBtn">
+                        <i class="fa-solid fa-robot"></i> Nova mensagem automática
+                    </button> -->
                     <button class="btn btn-logout" id="logoutBtn">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        <i class="fa-solid fa-door-open"></i> Logout
                     </button>
                 </div>
             </div>
         </header>
+    </div>
 
-        <div class="kanban-container">
-            <div class="kanban-column" data-status="contrato">
-                <div class="column-header">
-                    <h2>Contrato</h2>
-                    <span class="badge" id="contrato-count">0</span>
-                </div>
-                <div class="project-list" id="col-contrato">
-                </div>
+    <div class="kanban-container">
+        <div class="kanban-column" data-status="contrato">
+            <div class="column-header">
+                <h2>Contrato</h2>
+                <span class="badge" id="contrato-count">0</span>
             </div>
-
-            <div class="kanban-column" data-status="kit adquirido">
-                <div class="column-header">
-                    <h2>Kit Adquirido</h2>
-                    <span class="badge" id="kit-adquirido-count">0</span>
-                </div>
-                <div class="project-list" id="col-kit-adquirido">
-                </div>
-            </div>
-
-            <div class="kanban-column" data-status="instalação">
-                <div class="column-header">
-                    <h2>Instalação</h2>
-                    <span class="badge" id="instalacao-count">0</span>
-                </div>
-                <div class="project-list" id="col-instalacao">
-                </div>
-            </div>
-
-            <div class="kanban-column" data-status="ativação">
-                <div class="column-header">
-                    <h2>Ativação</h2>
-                    <span class="badge" id="ativacao-count">0</span>
-                </div>
-                <div class="project-list" id="col-ativacao">
-                </div>
-            </div>
-
-            <div class="kanban-column" data-status="concluído">
-                <div class="column-header">
-                    <h2>Concluído</h2>
-                    <span class="badge" id="concluido-count">0</span>
-                </div>
-                <div class="project-list" id="col-concluido">
-                </div>
+            <div class="project-list" id="col-contrato">
             </div>
         </div>
 
-        <div class="modal" id="projectModal">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h2 id="modalTitle">Adicionar Cliente</h2>
-                <form id="newClientForm">
-                    <div class="form-group">
-                        <label for="nome_completo">Nome completo</label>
-                        <input type="text" id="nome_completo" name="nome_completo" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cpf">CPF</label>
-                        <input type="text" id="cpf" name="cpf" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="telefone">Telefone</label>
-                        <input type="text" id="telefone" name="telefone" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cep">CEP</label>
-                        <input type="text" id="cep" name="cep" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="logradouro">Logradouro</label>
-                        <input type="text" id="logradouro" name="logradouro" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="bairro">Bairro</label>
-                        <input type="text" id="bairro" name="bairro" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cidade">Cidade</label>
-                        <input type="text" id="cidade" name="cidade" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="estado">Estado</label>
-                        <input type="text" id="estado" name="estado" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="numero_casa">Número da casa</label>
-                        <input type="text" id="numero_casa" name="numero_casa" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="complemento">Complemento</label>
-                        <input type="text" id="complemento" name="complemento" />
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-cancel" id="cancelBtn">
-                            Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-save">Salvar Cliente</button>
-                    </div>
-                </form>
+        <div class="kanban-column" data-status="boas-vindas">
+            <div class="column-header">
+                <h2>Boas Vindas</h2>
+                <span class="badge" id="boas-vindas-count">0</span>
+            </div>
+            <div class="project-list" id="col-boasvindas">
             </div>
         </div>
 
-        <div class="modal" id="selectClientModal">
-            <div class="modal-content">
-                <span class="close-btn close-select-client">&times;</span>
-                <h2>Selecionar Cliente</h2>
-
-                <div class="search-box">
-                    <input type="text" id="clientSearch" placeholder="Buscar cliente...">
-                    <i class="fas fa-search"></i>
-                </div>
-
-                <div class="client-list" id="clientListContainer">
-                 <!-- Lista de clientes será carregada aqui -->
-                </div>
-                <div class="selected-client-info" id="selectedClientInfo" style="display:none;">
-
-                    <h3>Cliente Selecionado:</h3>
-                    <p id="selectedClientName"></p>
-                    <button id="proceedToContractBtn" class="btn btn-save">
-                    Prosseguir para Criar Contrato
-                    </button>    
-                </div>    
+        <div class="kanban-column" data-status="kit adquirido">
+            <div class="column-header">
+                <h2>Kit Adquirido</h2>
+                <span class="badge" id="kit-adquirido-count">0</span>
+            </div>
+            <div class="project-list" id="col-kit-adquirido">
             </div>
         </div>
 
-        <div class="modal" id="createContractModal">
-            <div class="modal-content">
-                <span class="close-btn close-create-contract">&times;</span>
-                <h2>Novo Projeto</h2>
-                <form id="createContractForm">
-                    <div class="form-group">
-                        <label for="tipo_kit">Tipo do Kit</label>
-                        <input type="text" id="tipo_kit" name="tipo_kit" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="cep_contract">CEP</label>
-                        <input type="text" id="cep_contract" name="cep_contract" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="logradouro_contract">Logradouro</label>
-                        <input type="text" id="logradouro_contract" name="logradouro_contract" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="bairro_contract">Bairro</label>
-                        <input type="text" id="bairro_contract" name="bairro_contract" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="cidade_contract">Cidade</label>
-                        <input type="text" id="cidade_contract" name="cidade_contract" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="estado_contract">Estado</label>
-                        <input type="text" id="estado_contract" name="estado_contract" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="numero_contract">Número</label>
-                        <input type="text" id="numero_contract" name="numero_contract" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="complemento_contract">Complemento</label>
-                        <input type="text" id="complemento_contract" name="complemento_contract" />
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-cancel close-create-contract">
-                            Cancelar
-                        </button>
-                        <button type="submit" class="btn btnCreate">
-                            Criar Projeto
-                        </button>
-                    </div>
-                </form>
+        <div class="kanban-column" data-status="instalação">
+            <div class="column-header">
+                <h2>Instalação</h2>
+                <span class="badge" id="instalacao-count">0</span>
+            </div>
+            <div class="project-list" id="col-instalacao">
+            </div>
+        </div>
+
+        <div class="kanban-column" data-status="ativação">
+            <div class="column-header">
+                <h2>Ativação</h2>
+                <span class="badge" id="ativacao-count">0</span>
+            </div>
+            <div class="project-list" id="col-ativacao">
+            </div>
+        </div>
+
+        <div class="kanban-column" data-status="concluído">
+            <div class="column-header">
+                <h2>Garantia</h2>
+                <span class="badge" id="concluido-count">0</span>
+            </div>
+            <div class="project-list" id="col-concluido">
             </div>
         </div>
     </div>
 
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalTitle">Adicionar Cliente</h2>
+            <form id="newClientForm">
+                <div class="form-group">
+                    <label for="nome_completo">Nome completo</label>
+                    <input type="text" id="nome_completo" name="nome_completo" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input type="text" id="cpf" name="cpf" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" id="telefone" name="telefone" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="cep">CEP</label>
+                    <input type="text" id="cep" name="cep" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="logradouro">Logradouro</label>
+                    <input type="text" id="logradouro" name="logradouro" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="bairro">Bairro</label>
+                    <input type="text" id="bairro" name="bairro" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" id="cidade" name="cidade" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <input type="text" id="estado" name="estado" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="numero_casa">Número da casa</label>
+                    <input type="text" id="numero_casa" name="numero_casa" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="complemento">Complemento</label>
+                    <input type="text" id="complemento" name="complemento" />
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" id="cancelBtn">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-save">Salvar Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="selectClientModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl"> <!-- Aumentado para XL -->
+    <div class="modal-content select-client-modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Selecionar Cliente</h2>
+        <button type="button" class="btn-close close-select-client" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Campo de busca -->
+        <div class="select-client-search mb-4">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <input type="text" class="form-control" id="clientSearch" placeholder="Digite o nome do cliente...">
+            <button class="btn btn-outline-secondary" type="button" id="clearSearch">Limpar</button>
+          </div>
+        </div>
+
+        <!-- Lista de clientes -->
+        <div class="select-client-list-container">
+          <div class="select-client-list-header row fw-bold border-bottom pb-2 mb-2">
+            <div class="col-md-6">Nome do Cliente</div>
+            <div class="col-md-6">Detalhes</div>
+          </div>
+          <div class="select-client-list" id="clientListContainer">
+            <div class="select-client-loading text-center">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="modal" id="createContractModal">
+        <div class="modal-content">
+            <span class="close-btn close-create-contract">&times;</span>
+            <h2>Novo Projeto</h2>
+            <form id="createContractForm">
+                <div class="form-group">
+                    <label for="numero_placas">Placas Solares</label>
+                    <input type="number" id="numero_placas" name="numero_placas" required />
+                </div>
+                <div class="form-group">
+                    <label for="inversores">Inversores</label>
+                    <input type="text" id="inversores" name="inversores" required />
+                </div>
+                <div class="form-group">
+                    <label for="cep_contract">CEP</label>
+                    <input type="text" id="cep_contract" name="cep_contract" required />
+                </div>
+                <div class="form-group">
+                    <label for="logradouro_contract">Logradouro</label>
+                    <input type="text" id="logradouro_contract" name="logradouro_contract" required />
+                </div>
+                <div class="form-group">
+                    <label for="bairro_contract">Bairro</label>
+                    <input type="text" id="bairro_contract" name="bairro_contract" required />
+                </div>
+                <div class="form-group">
+                    <label for="cidade_contract">Cidade</label>
+                    <input type="text" id="cidade_contract" name="cidade_contract" required />
+                </div>
+                <div class="form-group">
+                    <label for="estado_contract">Estado</label>
+                    <input type="text" id="estado_contract" name="estado_contract" required />
+                </div>
+                <div class="form-group">
+                    <label for="numero_contract">Número</label>
+                    <input type="text" id="numero_contract" name="numero_contract" required />
+                </div>
+                <div class="form-group">
+                    <label for="complemento_contract">Complemento</label>
+                    <input type="text" id="complemento_contract" name="complemento_contract" />
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel close-create-contract">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btnCreate">
+                        Criar Projeto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
     <script src="js/admin.js"></script>
     <script src="js/buttonsHandler.js"></script>
-    <script src="js/integration.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </body>
 
 </html>

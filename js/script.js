@@ -1,175 +1,219 @@
-const API_BASE_URL = 'http://34.121.218.11:7200';
+let contratosCliente = [];
 
-function getToken() {
-    const token = localStorage.getItem('access_token');
-    console.log('Token obtido do localStorage:', token);
-    return token;
-}
+document.addEventListener('DOMContentLoaded', () => {
+    carregarCliente();       // busca nome do cliente logado
+    carregarContratos();     // busca lista de contratos
 
-function parseJwt(token) {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(
-            atob(base64)
-                .split('')
-                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                .join('')
-        );
-        const parsed = JSON.parse(jsonPayload);
-        console.log('Payload do token decodificado:', parsed);
-        return parsed;
-    } catch (error) {
-        console.error('Erro ao decodificar token JWT:', error);
-        return null;
-    }
-}
+    const plantSelect = document.getElementById('plantSelect');
+    plantSelect.addEventListener('change', async () => {
+        const selectedId = plantSelect.value;
 
-async function fetchNomeCliente() {
-  const token = getToken();
-  if (!token) {
-    console.error('Token não encontrado.');
-    return null;
-  }
+        if (!selectedId) {
+            limparDadosKit();
+            return;
+        }
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/meus-contratos`, {
-      headers: { 'Authorization': `Bearer ${token}` }
+        try {
+            // Busca dados detalhados do contrato selecionado
+            const contratoDetalhado = await carregarContratoDetalhado(selectedId);
+
+            // Atualiza os dados na página
+            atualizarKitAdquirido(contratoDetalhado);
+
+            // Atualiza campo com CEP (ou outro identificador)
+            document.getElementById('contractNumber').textContent = contratoDetalhado.cep || '';
+        } catch (erro) {
+            console.error('Erro ao carregar contrato detalhado:', erro);
+            limparDadosKit();
+        }
     });
+});
 
-    if (!response.ok) {
-      console.error('Erro ao buscar contratos:', response.statusText);
-      return null;
-    }
-
-    const contratos = await response.json();
-    console.log('Contratos recebidos (JSON completo):', JSON.stringify(contratos, null, 2));
-
-    // Função auxiliar para tentar extrair nome de um objeto
-    function extrairNome(obj) {
-      if (!obj || typeof obj !== 'object') return null;
-      const keysNome = ['nome', 'nome_completo', 'cliente_nome', 'nomeCliente'];
-
-      for (const key of keysNome) {
-        if (obj[key] && typeof obj[key] === 'string') {
-          return obj[key];
-        }
-      }
-      return null;
-    }
-
-    for (const contrato of contratos) {
-      // Primeiro, tenta encontrar um objeto 'cliente' dentro do contrato
-      if (contrato.cliente) {
-        const nome = extrairNome(contrato.cliente);
-        if (nome) {
-          console.log('Nome do cliente encontrado em contrato.cliente:', nome);
-          return nome;
-        }
-      }
-
-      // Se não achou, tenta extrair direto do contrato (alguns contratos têm o nome direto)
-      const nome = extrairNome(contrato);
-      if (nome) {
-        console.log('Nome do cliente encontrado direto no contrato:', nome);
-        return nome;
-      }
-
-      // Por último, procura qualquer string no contrato que contenha 'nome'
-      for (const key in contrato) {
-        if (
-          typeof contrato[key] === 'string' &&
-          key.toLowerCase().includes('nome')
-        ) {
-          console.log('Possível campo nome encontrado:', key, contrato[key]);
-          return contrato[key];
-        }
-      }
-    }
-
-    console.warn('Nenhum campo nome encontrado nos contratos.');
-    return null;
-
-  } catch (error) {
-    console.error('Erro na requisição:', error);
-    return null;
-  }
-}
-
-async function fetchContratos() {
-    const token = getToken();
-
-    if (!token) {
-        console.error('Token não encontrado. Usuário não autenticado.');
-        return [];
-    }
-
+async function carregarCliente() {
     try {
-        const response = await fetch(`${API_BASE_URL}/meus-contratos`, {
+        const token = localStorage.getItem("access_token");
+
+        const resposta = await fetch('https://www.sansolenergiasolar.com.br/python/cliente/me', {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         });
 
-        console.log('Resposta da requisição de contratos:', response);
-        if (!response.ok) {
-            console.error('Erro na requisição de contratos:', response.statusText);
-            return [];
+        if (!resposta.ok) {
+            throw new Error(`Erro ao buscar cliente: ${resposta.statusText}`);
         }
 
-        const contratos = await response.json();
-        console.log('Contratos recebidos:', contratos);
-        return contratos;
-
-    } catch (error) {
-        console.error('Erro ao buscar contratos:', error);
-        return [];
+        const cliente = await resposta.json();
+        document.getElementById('userName').textContent = cliente.nome_completo || 'Cliente';
+    } catch (erro) {
+        console.error('Erro ao carregar cliente:', erro);
+        document.getElementById('userName').textContent = 'Cliente';
     }
 }
 
-async function popularSelectContratos(selectId) {
-    const select = document.getElementById(selectId);
+async function carregarContratos() {
+    try {
+        const token = localStorage.getItem("access_token");
 
-    if (!select) {
-        console.error(`Elemento com id "${selectId}" não encontrado.`);
-        return;
-    }
+        const resposta = await fetch('https://www.sansolenergiasolar.com.br/python/meus-contratos', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
 
-    // Buscar e exibir nome do cliente no header (exemplo)
-    const nomeCliente = await fetchNomeCliente();
-    if (nomeCliente) {
-        console.log('Nome do cliente para exibir no header:', nomeCliente);
-        const headerNome = document.getElementById('header-nome-cliente');
-        if (headerNome) {
-            headerNome.textContent = `Olá, ${nomeCliente}`;
+        if (!resposta.ok) {
+            throw new Error(`Erro ao carregar contratos: ${resposta.statusText}`);
         }
-    } else {
-        console.warn('Nome do cliente não pôde ser obtido.');
+
+        contratosCliente = await resposta.json();
+
+        const selectElement = document.getElementById('plantSelect');
+        selectElement.innerHTML = '';
+
+        if (contratosCliente.length === 0) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'Nenhum contrato encontrado';
+            selectElement.appendChild(option);
+            limparDadosKit();
+            return;
+        }
+
+        contratosCliente.forEach(contrato => {
+            const option = document.createElement('option');
+            option.value = contrato.id;
+            option.textContent = `${contrato.cep} - ${contrato.endereco_completo}`;
+            selectElement.appendChild(option);
+        });
+
+        // Dispara o evento change para preencher os dados do primeiro contrato automaticamente
+        selectElement.dispatchEvent(new Event('change'));
+
+    } catch (erro) {
+        console.error('Erro ao buscar contratos:', erro);
+        limparDadosKit();
+    }
+}
+
+async function carregarContratoDetalhado(contratoId) {
+    const token = localStorage.getItem("access_token");
+
+    const resposta = await fetch(`https://www.sansolenergiasolar.com.br/python/meus-contratos/${contratoId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (!resposta.ok) {
+        throw new Error(`Erro ao carregar contrato detalhado: ${resposta.statusText}`);
     }
 
-    const contratos = await fetchContratos();
+    return await resposta.json();
+}
 
-    if (contratos.length === 0) {
-        const option = document.createElement('option');
-        option.value = '';
-        option.textContent = 'Nenhum contrato disponível';
-        select.appendChild(option);
-        return;
-    }
+function atualizarKitAdquirido(contrato) {
+    document.getElementById('quantidade-placas').textContent = contrato.numero_placas ?? '0';
+    document.getElementById('descricao-placas').textContent = ''; // Sem descrição no JSON
 
-    select.innerHTML = '';
+    document.getElementById('quantidade-inversores').textContent = contrato.inversores || '0 Inversores';
+    document.getElementById('descricao-inversores').textContent = ''; // Sem descrição no JSON
+}
 
-    contratos.forEach(contrato => {
-        const option = document.createElement('option');
-        option.value = contrato.id; // adapte para o campo correto
-        option.textContent = contrato.nome || contrato.descricao || `Contrato ${contrato.id}`;
-        select.appendChild(option);
+function limparDadosKit() {
+    document.getElementById('quantidade-placas').textContent = '0';
+    document.getElementById('descricao-placas').textContent = '';
+    document.getElementById('quantidade-inversores').textContent = '0';
+    document.getElementById('descricao-inversores').textContent = '';
+    document.getElementById('contractNumber').textContent = '';
+}
+
+// ---------------------------- STATUS DA JORNADA ------------------------------------------------
+
+function atualizarStatusJornada(statusAtual) {
+    // Ordem dos status, na sequência correta
+    const ordemStatus = [
+    "contrato",
+    "boas-vindas",
+    "kit adquirido",
+    "instalação",
+    "ativação",
+    "concluído"
+];
+
+    // Pega todos os elementos timeline-step
+    const passos = document.querySelectorAll('.timeline-step');
+
+    // Descobre o índice do status atual na ordem
+    const indiceAtual = ordemStatus.indexOf(statusAtual);
+
+    passos.forEach((passo) => {
+        const statusPasso = passo.getAttribute('data-status');
+
+        if (indiceAtual === -1) {
+            // Se status não reconhecido, remove todas as ativações
+            passo.classList.remove('active');
+            return;
+        }
+
+        // Se o passo está antes ou é igual ao status atual, ativa ele
+        if (ordemStatus.indexOf(statusPasso) <= indiceAtual) {
+            passo.classList.add('active');
+        } else {
+            passo.classList.remove('active');
+        }
     });
 }
 
+// Agora vamos modificar o event listener do plantSelect para atualizar o status da jornada após carregar o contrato detalhado:
+
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM carregado, inicializando...');
-    popularSelectContratos('plantSelect');
+    carregarCliente();       // busca nome do cliente logado
+    carregarContratos();     // busca lista de contratos
+
+    const plantSelect = document.getElementById('plantSelect');
+    plantSelect.addEventListener('change', async () => {
+        const selectedId = plantSelect.value;
+
+        if (!selectedId) {
+            limparDadosKit();
+            // Remove highlights se não tem contrato selecionado
+            atualizarStatusJornada('');
+            return;
+        }
+
+        try {
+            // Busca dados detalhados do contrato selecionado
+            const contratoDetalhado = await carregarContratoDetalhado(selectedId);
+
+            // Atualiza os dados na página
+            atualizarKitAdquirido(contratoDetalhado);
+
+            // Atualiza campo com CEP (ou outro identificador)
+            document.getElementById('contractNumber').textContent = contratoDetalhado.cep || '';
+
+            // Atualiza o destaque da timeline de status conforme o status do contrato
+            atualizarStatusJornada(contratoDetalhado.status);
+
+        } catch (erro) {
+            console.error('Erro ao carregar contrato detalhado:', erro);
+            limparDadosKit();
+            atualizarStatusJornada('');
+        }
+    });
+});
+
+// ---------------------- LOGOUT ------------------------------------------
+
+document.querySelector('.logout-btn').addEventListener('click', () => {
+    // Remove o token do localStorage
+    localStorage.removeItem('access_token');
+
+    // Redireciona para a página de login
+    window.location.href = '/login.html';
 });

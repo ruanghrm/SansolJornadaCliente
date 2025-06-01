@@ -540,6 +540,182 @@ h1::after {
     color: black;
 }
 
+/* Modal Principal */
+.select-client-modal {
+  max-width: 90vw;
+  width: 1100px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal Header */
+.select-client-modal .modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  padding: 1.2rem 1.8rem;
+}
+
+.select-client-modal .modal-title {
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+/* Barra de Pesquisa */
+.select-client-search {
+  margin-bottom: 1.5rem;
+}
+
+.select-client-search .input-group-text {
+  background-color: white;
+  border-right: none;
+}
+
+.select-client-search #clientSearch {
+  border-left: none;
+}
+
+.select-client-search #clearSearch {
+  border-left: none;
+}
+
+/* Lista de Clientes - Container */
+.select-client-list-container {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  max-height: 460px;
+  overflow-y: auto;
+  background-color: #ffffff;
+}
+
+/* Cabeçalho da Lista */
+.select-client-list-header {
+  display: flex;
+  padding: 0.75rem 1.25rem;
+  background-color: #f1f3f5;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #dee2e6;
+  color: #495057;
+}
+
+/* Estilo para Itens da Lista */
+.select-client-list .client-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f1f3f5;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  flex-wrap: wrap;
+}
+
+.select-client-list .client-item:hover {
+  background-color: #f8f9fa;
+}
+
+.client-item.selected {
+  background-color: #e6f0ff;
+  border-left: 4px solid #0d6efd;
+}
+
+.client-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #212529;
+  flex: 1 1 50%;
+}
+
+.client-details {
+  font-size: 0.9rem;
+  color: #6c757d;
+  flex: 1 1 50%;
+  text-align: right;
+}
+
+/* Botões dentro do item (se houver) */
+.client-item .btn {
+  padding: 2px 8px;
+  font-size: 0.85rem;
+}
+
+/* Scroll bonitinho */
+.select-client-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+.select-client-list-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+
+#clientName {
+  position: fixed;      
+  top: 20px;             
+  right: 20px;          
+  background-color: rgba(0, 0, 0, 0.7); 
+  color: white;            
+  padding: 12px 20px;      
+  border-radius: 8px;      
+  font-size: 0.8rem;      
+  font-weight: 600;        
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+  max-width: 550px;       
+  z-index: 1050;           
+  user-select: none;       
+  cursor: default;         
+  transition: background-color 0.3s ease;
+}
+
+.project-card {
+  position: relative;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+}
+.delete-btn:hover {
+  color: darkred;
+}
+
+#clientName:hover {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.select-client-footer {
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+.selected-client-details {
+    margin-right: auto;
+}
+
+.selected-client-name {
+    font-weight: 500;
+    margin: 0;
+    color: #2c3e50;
+}
+
+/* Loading */
+.select-client-loading {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
 /* Responsividade */
 @media (max-width: 1200px) {
     .kanban-container {
