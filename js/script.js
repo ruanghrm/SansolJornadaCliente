@@ -214,6 +214,13 @@ document.querySelector('.logout-btn').addEventListener('click', () => {
     // Remove o token do localStorage
     localStorage.removeItem('access_token');
 
-    // Redireciona para a página de login
-    window.location.href = '/login.html';
+   const hostname = window.location.hostname;
+
+  if (hostname === "localhost" || hostname === "127.0.0.1") {
+    // Ambiente local
+    window.location.href = "/login.html";
+  } else {
+    // Ambiente produção
+    window.location.href = "https://www.sansolenergiasolar.com.br/jornada/";
+  }
 });

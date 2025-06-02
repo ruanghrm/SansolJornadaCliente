@@ -524,10 +524,16 @@ document.addEventListener('DOMContentLoaded', function () {
 //---------------- MODAL CRIAR CONTRATO/PROJETO END //----------------------
 
 document.getElementById("logoutBtn").addEventListener("click", function () {
-  // Limpa dados de sessão/localStorage (ajuste conforme seu uso)
   sessionStorage.clear();
   localStorage.clear();
 
-  // Redireciona para a página de login (ou outra)
-  window.location.href = "/login.html"; // ou o caminho da sua página de login
+  const hostname = window.location.hostname;
+
+  if (hostname === "localhost" || hostname === "127.0.0.1") {
+    // Ambiente local
+    window.location.href = "/login.html";
+  } else {
+    // Ambiente produção
+    window.location.href = "https://www.sansolenergiasolar.com.br/jornada/";
+  }
 });
