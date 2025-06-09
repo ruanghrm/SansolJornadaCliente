@@ -213,8 +213,19 @@ async function drop(e) {
     }
 
     if (contrato.status === newStatus) {
-        return; // já está no status correto
+        return;
     }
+
+    const mensagensPorStatus = {
+        "contrato": "Seu contrato foi gerado e estamos iniciando o processo!",
+        "boas-vindas": "Bem-vindo(a)! Estamos felizes em tê-lo conosco!",
+        "kit adquirido": "Seu kit foi adquirido com sucesso! Em breve você receberá as próximas instruções.",
+        "instalação": "Estamos prontos para instalar! Aguarde o agendamento.",
+        "ativação": "Seu contrato está no estágio de Ativação! Parabéns!",
+        "concluído": "Tudo certo! Agora seu contrato está em Garantia. Conte conosco sempre que precisar!"
+    };
+
+    const mensagemCliente = mensagensPorStatus[newStatus] || "Atualização de status concluída.";
 
     try {
         const res = await fetch(`${API_BASE}/contratos/${contractId}/status`, {
@@ -225,7 +236,7 @@ async function drop(e) {
             },
             body: JSON.stringify({
                 novo_status: newStatus,
-                mensagem: `Contrato movido manualmente no painel`
+                mensagem: mensagemCliente
             })
         });
 
@@ -241,6 +252,7 @@ async function drop(e) {
         alert("Erro no fetch PUT: " + err.message);
     }
 }
+
 
 function updateCounters() {
     Object.entries(statusToBadgeIdMap).forEach(([status, badgeId]) => {

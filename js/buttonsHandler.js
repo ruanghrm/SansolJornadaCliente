@@ -483,6 +483,11 @@ function handleCreateContractSubmit(event) {
     alert('Contrato/projeto criado com sucesso!');
     closeCreateContractModal();
     console.log('Contrato criado:', data);
+    if (typeof carregarContratos === 'function') {
+    window.carregarContratos();
+  } else {
+    console.warn('Função carregarContratos não encontrada.');
+  }
   })
   .catch(error => {
     alert(error.message);

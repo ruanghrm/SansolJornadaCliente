@@ -38,6 +38,15 @@
         </div>
     </header>
 
+    <div id="statusModal" class="hidden">
+        <div class="modal-content">
+            <button id="closeModal" aria-label="Fechar modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <p id="statusMessage"></p>
+        </div>
+    </div>
+
     <div class="main-header">
         <h1>Minha Jornada</h1>
     </div>
@@ -66,6 +75,62 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Botão Flutuante FAQ -->
+            <div class="faq-button" id="faqButton">
+                <span>FAQ</span>
+            </div>
+
+            <!-- Modal FAQ -->
+            <div class="faq-modal" id="faqModal">
+                <div class="faq-modal-content">
+                    <span class="faq-close-btn">&times;</span>
+                    <h2>Perguntas Frequentes</h2>
+                    <div class="faq-container">
+                        <div class="faq-item">
+                            <button class="faq-question">Quanto tempo dura a instalação do sistema solar?</button>
+                            <div class="faq-answer">
+                                <p>O tempo de instalação varia conforme o tamanho do sistema, mas geralmente leva de 1 a
+                                    3 dias úteis.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">Preciso fazer alguma manutenção no sistema?</button>
+                            <div class="faq-answer">
+                                <p>Recomendamos uma limpeza anual das placas solares e verificação do inversor. Nosso
+                                    sistema é projetado para requerer mínima manutenção.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">O que acontece quando há falta de energia?</button>
+                            <div class="faq-answer">
+                                <p>Nos sistemas conectados à rede, quando há falta de energia o sistema também desliga
+                                    por questões de segurança. Para ter energia durante blecautes, seria necessário um
+                                    sistema com baterias.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">Como é calculada a minha economia?</button>
+                            <div class="faq-answer">
+                                <p>Sua economia é calculada com base na produção de energia do seu sistema menos o
+                                    consumo da sua residência, resultando em créditos energéticos que reduzem sua conta
+                                    de luz.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">Qual a vida útil do sistema solar?</button>
+                            <div class="faq-answer">
+                                <p>As placas solares têm vida útil de 25 anos ou mais, enquanto os inversores geralmente
+                                    precisam ser substituídos após 10-15 anos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <section class="warranty-section">
                 <div class="section-header">
@@ -132,7 +197,7 @@
                         <div class="timeline-content">
                             <h3>Instalação</h3>
                             <p>Equipe técnica no local</p>
-                            <span class="timeline-date" id="dateStep4">Pendente</span>
+                            <span class="timeline-date" id="dateStep4"></span>
                         </div>
                     </div>
 
@@ -143,7 +208,7 @@
                         <div class="timeline-content">
                             <h3>Ativação</h3>
                             <p>Sistema conectado à rede</p>
-                            <span class="timeline-date" id="dateStep5">Pendente</span>
+                            <span class="timeline-date" id="dateStep5"></span>
                         </div>
                     </div>
 
@@ -154,7 +219,7 @@
                         <div class="timeline-content">
                             <h3>Garantia</h3>
                             <p>Período de garantia iniciado</p>
-                            <span class="timeline-date" id="dateStep6">Pendente</span>
+                            <span class="timeline-date" id="dateStep6"></span>
                         </div>
                     </div>
                 </div>
